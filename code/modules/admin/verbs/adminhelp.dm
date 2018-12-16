@@ -106,11 +106,15 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 
 	switch(selected_type)
 		if("Mentorhelp")
-			msg = "<span class='mentorhelp'>[selected_type]: </span><span class='boldnotice'>[key_name(src, TRUE, selected_type)] ([ADMIN_QUE(mob,"?")]) ([ADMIN_PP(mob,"PP")]) ([ADMIN_VV(mob,"VV")]) ([ADMIN_SM(mob,"SM")]) ([admin_jump_link(mob)]) (<A HREF='?_src_=holder;check_antagonist=1'>CA</A>) (<A HREF='?_src_=holder;rejectadminhelp=[UID()]'>REJT</A>) [ai_found ? " (<A HREF='?_src_=holder;adminchecklaws=[mob.UID()]'>CL</A>)" : ""] (<A HREF='?_src_=holder;take_question=[mob.UID()];is_mhelp=1'>TAKE</A>) :</span> <span class='mentorhelp'>[msg]</span>"
+			if(check_rights(R_ADMIN|R_MOD, 0))
+				msg = "<span class='mentorhelp'>[selected_type]: </span><span class='boldnotice'>[key_name(src, TRUE, selected_type)] ([ADMIN_QUE(mob,"?")]) ([ADMIN_PP(mob,"PP")]) ([ADMIN_VV(mob,"VV")]) ([ADMIN_SM(mob,"SM")]) ([admin_jump_link(mob)]) (<A HREF='?_src_=holder;check_antagonist=1'>CA</A>) (<A HREF='?_src_=holder;rejectadminhelp=[UID()]'>REJT</A>) [ai_found ? " (<A HREF='?_src_=holder;adminchecklaws=[mob.UID()]'>CL</A>)" : ""] (<A HREF='?_src_=holder;take_question=[mob.UID()];is_mhelp=1'>TAKE</A>) :</span> <span class='mentorhelp'>[msg]</span>"
+			else
+				msg = "<span class='mentorhelp'>[selected_type]: </span><span class='boldnotice'>[key_name(src, TRUE, selected_type)] ([ADMIN_QUE(mob,"?")]) [isobserver(usr) ? " (<A HREF='?_src_=holder;ghost_follow_link=[mob.UID()]'>GFLW</A>)" : ""] (<A HREF='?_src_=holder;take_question=[mob.UID()];is_mhelp=1'>TAKE</A>) :</span> <span class='mentorhelp'>[msg]</span>"
+
 			for(var/client/X in mentorholders + modholders + adminholders)
 				if(X.prefs.sound & SOUND_ADMINHELP)
 					X << 'sound/effects/adminhelp.ogg'
-				to_chat(X, msg)
+						to_chat(X, msg)
 		if("Adminhelp")
 			var/ticketNum // Holder for the ticket number
 			var/prunedmsg ="[usr.client]: [msg]" // Message without links
