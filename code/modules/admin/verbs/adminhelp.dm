@@ -114,7 +114,7 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 			for(var/client/X in mentorholders + modholders + adminholders)
 				if(X.prefs.sound & SOUND_ADMINHELP)
 					X << 'sound/effects/adminhelp.ogg'
-						to_chat(X, msg)
+					to_chat(X, msg)
 		if("Adminhelp")
 			var/ticketNum // Holder for the ticket number
 			var/prunedmsg ="[usr.client]: [msg]" // Message without links
